@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SDG Data Platform | PSA x UNICEF Philippines</title>
+<title>SDG Data Platform | PSA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -189,7 +189,7 @@ table.data td.empty{color:#c2ccd3}
 {
   "platform": {
     "title": "SDG Data Platform",
-    "subtitle": "Philippine Statistics Authority and UNICEF Philippines",
+    "subtitle": "Philippine Statistics Authority",
     "description": "Regional and national data on the Sustainable Development Goal indicators of the Philippines, compiled from data-provider agencies through the SDG Data Platform submission forms.",
     "lastUpdated": "2026-07-07"
   },
@@ -10533,8 +10533,8 @@ MDgyMixuL2EsMCwwLFRydWUsMTE2Mgo=
 
 <script>
 /* =====================================================================
-   SDG Data Platform (web) - PSA x UNICEF Philippines
-   Data source: KoboToolbox CSV exports registered in config.json
+   SDG Data Platform (web)
+   Data source: InForm ODK CSV exports registered in config.json
    ===================================================================== */
 
 /* ---------- region dictionary (Kobo column suffix -> map + labels) ---------- */
@@ -10764,7 +10764,7 @@ function route(){
    HOME
    ===================================================================== */
 function renderHome(){
-  document.title = "SDG Data Platform | PSA x UNICEF Philippines";
+  document.title = "SDG Data Platform | PSA";
   const c = S.config;
   const liveGoals = c.goals.filter(g=>g.status==="live"&&S.goalsWithData.has(g.num));
   const nInd = [...S.indicators.values()].filter(i=>liveGoals.some(g=>g.num===i.goal)).length;
