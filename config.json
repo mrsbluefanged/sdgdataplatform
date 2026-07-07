@@ -1,0 +1,166 @@
+{
+  "platform": {
+    "title": "SDG Data Platform",
+    "subtitle": "Philippine Statistics Authority and UNICEF Philippines",
+    "description": "Regional and national data on the Sustainable Development Goal indicators of the Philippines, compiled from data-provider agencies through the SDG Data Platform submission forms.",
+    "lastUpdated": "2026-07-07"
+  },
+  "_help_forms": "Register every KoboToolbox CSV export here. To add a form: export the CSV, drop it in the /data folder, add one entry below. Indicators inside are detected automatically by their number prefix (1.x.x goes to Goal 1, 4.x.x to Goal 4, and so on).",
+  "forms": [
+    {
+      "id": "psa_phdsd",
+      "file": "data/psa_phdsd.csv",
+      "agency": "PSA - Poverty and Human Development Statistics Division"
+    },
+    {
+      "id": "psa_vsd",
+      "file": "data/psa_vsd.csv",
+      "agency": "PSA - Vital Statistics Division"
+    },
+    {
+      "id": "deped",
+      "file": "data/deped.csv",
+      "agency": "Department of Education"
+    }
+  ],
+  "_help_ignore": "Indicator names listed here (or anything not starting with a goal number) are skipped.",
+  "ignoreIndicators": [
+    "D_04_01_01_03_00_g00_00"
+  ],
+  "_help_goals": "status: live = clickable with data page, soon = shown but disabled. Titles, colors, and descriptions are editable.",
+  "goals": [
+    {
+      "num": 1,
+      "title": "No Poverty",
+      "color": "#E5243B",
+      "status": "live",
+      "description": "End poverty in all its forms everywhere."
+    },
+    {
+      "num": 2,
+      "title": "Zero Hunger",
+      "color": "#DDA63A",
+      "status": "soon",
+      "description": "End hunger, achieve food security and improved nutrition and promote sustainable agriculture."
+    },
+    {
+      "num": 3,
+      "title": "Good Health and Well-being",
+      "color": "#4C9F38",
+      "status": "soon",
+      "description": "Ensure healthy lives and promote well-being for all at all ages."
+    },
+    {
+      "num": 4,
+      "title": "Quality Education",
+      "color": "#C5192D",
+      "status": "soon",
+      "description": "Ensure inclusive and equitable quality education and promote lifelong learning opportunities for all."
+    },
+    {
+      "num": 5,
+      "title": "Gender Equality",
+      "color": "#FF3A21",
+      "status": "soon",
+      "description": "Achieve gender equality and empower all women and girls."
+    },
+    {
+      "num": 6,
+      "title": "Clean Water and Sanitation",
+      "color": "#26BDE2",
+      "status": "soon",
+      "description": "Ensure availability and sustainable management of water and sanitation for all."
+    },
+    {
+      "num": 7,
+      "title": "Affordable and Clean Energy",
+      "color": "#FCC30B",
+      "status": "soon",
+      "description": "Ensure access to affordable, reliable, sustainable and modern energy for all."
+    },
+    {
+      "num": 8,
+      "title": "Decent Work and Economic Growth",
+      "color": "#A21942",
+      "status": "soon",
+      "description": "Promote sustained, inclusive and sustainable economic growth, full and productive employment and decent work for all."
+    },
+    {
+      "num": 9,
+      "title": "Industry, Innovation and Infrastructure",
+      "color": "#FD6925",
+      "status": "soon",
+      "description": "Build resilient infrastructure, promote inclusive and sustainable industrialization and foster innovation."
+    },
+    {
+      "num": 10,
+      "title": "Reduced Inequalities",
+      "color": "#DD1367",
+      "status": "soon",
+      "description": "Reduce inequality within and among countries."
+    },
+    {
+      "num": 11,
+      "title": "Sustainable Cities and Communities",
+      "color": "#FD9D24",
+      "status": "soon",
+      "description": "Make cities and human settlements inclusive, safe, resilient and sustainable."
+    },
+    {
+      "num": 12,
+      "title": "Responsible Consumption and Production",
+      "color": "#BF8B2E",
+      "status": "soon",
+      "description": "Ensure sustainable consumption and production patterns."
+    },
+    {
+      "num": 13,
+      "title": "Climate Action",
+      "color": "#3F7E44",
+      "status": "soon",
+      "description": "Take urgent action to combat climate change and its impacts."
+    },
+    {
+      "num": 14,
+      "title": "Life Below Water",
+      "color": "#0A97D9",
+      "status": "soon",
+      "description": "Conserve and sustainably use the oceans, seas and marine resources for sustainable development."
+    },
+    {
+      "num": 15,
+      "title": "Life on Land",
+      "color": "#56C02B",
+      "status": "soon",
+      "description": "Protect, restore and promote sustainable use of terrestrial ecosystems, sustainably manage forests, combat desertification, and halt and reverse land degradation and halt biodiversity loss."
+    },
+    {
+      "num": 16,
+      "title": "Peace, Justice and Strong Institutions",
+      "color": "#00689D",
+      "status": "soon",
+      "description": "Promote peaceful and inclusive societies for sustainable development, provide access to justice for all and build effective, accountable and inclusive institutions at all levels."
+    },
+    {
+      "num": 17,
+      "title": "Partnerships for the Goals",
+      "color": "#19486A",
+      "status": "soon",
+      "description": "Strengthen the means of implementation and revitalize the Global Partnership for Sustainable Development."
+    }
+  ],
+  "_help_indicators": "Optional per-indicator settings, keyed by indicator code. target2030 draws the target line and drives the pace-of-progress badge. direction: down = lower is better, up = higher is better. Indicators found in the data but not listed here still appear, just without a target line. For now, only the 1.2.1 target is copied from the PBIX pace-of-progress table; replace this later with the official verified PSA SDG Watch/PDP target table.",
+  "indicators": {
+    "1.2.1": {
+      "unit": "%",
+      "direction": "down",
+      "target2030": 11.7,
+      "targetSource": "PBIX pace-of-progress table: 2030 Target",
+      "targetNote": "Copied from the PBIX pace-of-progress table. Please verify against the official PSA SDG Watch/PDP target before publication."
+    }
+  },
+  "_help_pace": "Tolerance (in % of the baseline-to-target distance) allowed behind the straight-line path to 2030 while still counting as on track.",
+  "pace": {
+    "tolerancePct": 5
+  }
+}
