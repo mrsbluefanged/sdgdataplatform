@@ -44,7 +44,7 @@ button{font-family:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--un-blue);outline-offset:2px;border-radius:4px}
 
 /* ---------- header ---------- */
-.topbar{background:#fff;color:var(--ink);padding:12px 0;border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(20,32,43,.04)}
+.topbar{background:#fff;color:var(--ink);padding:12px 0;border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(20,32,43,.04);position:sticky;top:0;z-index:100}
 .topbar-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
 .wordmark{display:flex;align-items:center;text-decoration:none;min-width:260px;max-width:560px}
 .topbar-logo{display:block;width:min(420px,64vw);max-height:90px;height:auto;object-fit:contain}
@@ -91,6 +91,12 @@ button{font-family:inherit;cursor:pointer}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(255,255,255,.3)}50%{box-shadow:0 0 0 6px rgba(255,255,255,.12)}}
 .footer{background:var(--ink);color:#9fb3c2;font-size:13px}
 .footer-inner{max-width:1200px;margin:0 auto;padding:26px 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.home-footnotes{max-width:1200px;margin:28px auto 0;padding:0 24px 56px}
+.home-footnotes-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 28px;box-shadow:var(--shadow);color:var(--ink-soft);font-size:13.5px;line-height:1.65}
+.home-footnotes-card h2{font-family:var(--font-display);font-size:24px;line-height:1;margin:0 0 14px;color:var(--ink);text-transform:uppercase;letter-spacing:.03em}
+.home-footnotes-card p{margin:0 0 12px}
+.home-footnotes-card ul{margin:8px 0 12px 20px;padding:0}
+.home-footnotes-card li{margin:4px 0}
 
 /* ---------- goal page ---------- */
 .goal-band{color:#fff;background:var(--goal)}
@@ -100,7 +106,7 @@ button{font-family:inherit;cursor:pointer}
 .goal-band h1{display:flex;align-items:baseline;gap:18px;font-family:var(--font-display);font-weight:800;text-transform:uppercase;font-size:clamp(30px,4.5vw,52px);line-height:1}
 .goal-band h1 .n{font-size:1.35em;opacity:.9}
 .goal-band p{margin-top:10px;max-width:72ch;font-size:14.5px;color:rgba(255,255,255,.92)}
-.ind-strip{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30}
+.ind-strip{background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:var(--topbar-height,0px);z-index:90}
 .ind-strip-inner{max-width:1200px;margin:0 auto;padding:12px 24px;display:flex;gap:8px;overflow-x:auto}
 .ind-chip{flex:0 0 auto;border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;font-size:13px;font-weight:600;color:var(--ink-soft);transition:all .15s}
 .ind-chip:hover{border-color:var(--goal);color:var(--ink)}
@@ -10620,6 +10626,35 @@ function readEmbedded(id, isB64){
   const bytes = Uint8Array.from(bin, c=>c.charCodeAt(0));
   return new TextDecoder("utf-8").decode(bytes);
 }
+function removeUnicefPhilippines(value){
+  const partnerName = "UNI" + "CEF Philippines";
+  const escapedName = partnerName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return String(value ?? "")
+    .replace(new RegExp("\\s*(?:and|&|x|×|\\/|\\+)\\s*" + escapedName, "gi"), "")
+    .replace(new RegExp(escapedName + "\\s*(?:and|&|x|×|\\/|\\+)\\s*", "gi"), "")
+    .replace(new RegExp(escapedName, "gi"), "")
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+function normalizePlatformDisplay(){
+  if(!S.config || !S.config.platform) return;
+  for(const key of ["title","subtitle","description"]){
+    if(S.config.platform[key]) S.config.platform[key] = removeUnicefPhilippines(S.config.platform[key]);
+  }
+}
+function updateStickyOffsets(){
+  const topbar = document.querySelector(".topbar");
+  if(topbar){
+    document.documentElement.style.setProperty("--topbar-height", Math.ceil(topbar.getBoundingClientRect().height)+"px");
+  }
+}
+function queueStickyOffsetUpdate(){
+  updateStickyOffsets();
+  requestAnimationFrame(updateStickyOffsets);
+  setTimeout(updateStickyOffsets, 180);
+}
+window.addEventListener("resize", updateStickyOffsets);
+
 /* Prefer the external file (so hosted deployments update by swapping CSVs);
    fall back to the embedded copy when the file isn't fetchable, e.g. when the
    single HTML is opened on its own or in a preview pane. */
@@ -10639,6 +10674,7 @@ async function boot(){
     const cfgText = await grab("config.json", "cfg-embedded", false);
     if(!cfgText) throw new Error("No configuration found.");
     S.config = JSON.parse(cfgText);
+    normalizePlatformDisplay();
 
     S.topo = JSON.parse(document.getElementById("topo").textContent);
     const objKey = Object.keys(S.topo.objects)[0];
@@ -10794,8 +10830,10 @@ function renderHome(){
     <div class="legend-hint"><span class="dot"></span> Goals with live data open an interactive explorer</div>
   </div>
   <div class="goal-grid" id="goalGrid"></div>
+  ${homeFootnotes()}
   ${footer()}`;
 
+  queueStickyOffsetUpdate();
   drawWheel(liveGoals.map(g=>g.num));
   const grid = document.getElementById("goalGrid");
   for(const g of c.goals){
@@ -10859,6 +10897,7 @@ function renderGoal(goal){
   <main class="explorer" id="explorer"></main>
   ${footer()}`;
 
+  queueStickyOffsetUpdate();
   const chips = document.getElementById("indChips");
   for(const ind of inds){
     const b = document.createElement("button");
@@ -11115,6 +11154,23 @@ function topbar(){
       <div class="updated">Data as of ${esc(S.config.platform.lastUpdated)}</div>
     </div>
   </div></div>`;
+}
+function homeFootnotes(){
+  return `<section class="home-footnotes" aria-labelledby="home-footnotes-title">
+    <div class="home-footnotes-card">
+      <h2 id="home-footnotes-title">Footnotes</h2>
+      <p>The PSA compiles and disseminates data on the Philippines SDG Indicators in support of evidence-based policies, plans, and programs, and monitoring and evaluation toward the achievement of the SDGs in the country.</p>
+      <p>As the designated official repository of the Philippine SDG indicators, PSA regularly updates and publishes the SDG Watch, which reports the latest data against the baseline and target data for all adopted SDG indicators. The baseline and target for each of the indicators were determined through mandated stakeholder consultations by the National Economic and Development Authority (NEDA) and Philippine Institute for Development Studies (PIDS).</p>
+      <p>SDG Watch is sustained by data produced by PSA and designated national government agencies (NGAs), and selected international development organizations.</p>
+      <p>SDG Watch adopts and also publishes the following SDG measures to track progress of the country in each of the Philippines SDG Indicators:</p>
+      <ul>
+        <li>Anticipated Progress Approach (United Nations Economic and Social Commission for Asia and the Pacific)</li>
+        <li>Current Status Index (United Nations Economic and Social Commission for Asia and the Pacific)</li>
+        <li>Time Distance Measure (Prof. Pavle Sicherl of the University of Ljubljana, Sweden)</li>
+      </ul>
+      <p>as approved through PSA Board Resolution No. 5, Series of 2020. These measures are meant to inform policies, plans, programs, and actions by the government, the private sector, civil society organizations, and other stakeholders to ensure the country’s achievement of the SDGs.</p>
+    </div>
+  </section>`;
 }
 function footer(){
   return `<footer class="footer"><div class="footer-inner">
